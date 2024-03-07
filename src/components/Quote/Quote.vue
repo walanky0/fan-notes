@@ -1,22 +1,29 @@
 <template>
   <div>
     <article class="quote-item">
-      <div class="quote-item__buttons">
-        <BaseButton
-          theme="success"
-          v-if="canClickFavorite"
-          @click="$emit('clickFavorite')"
-        >
-          <img
-            :src="isFavorite ? '/icons/star-fill.svg' : '/icons/star.svg'"
-            class="quote-item__icon"
+      <div class="quote-item__content">
+        <div class="quote-item__buttons">
+          <BaseButton
+            theme="success"
+            v-if="canClickFavorite"
+            :icon="isFavorite ? '/icons/star-fill.svg' : '/icons/star.svg'"
+            alt="click favorite"
+            :tooltip="
+              isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'
+            "
+            @click="$emit('clickFavorite')"
           />
-        </BaseButton>
-        <BaseButton theme="fail" v-if="canDelete" @click="$emit('clickDrop')">
-          <img src="/icons/delete.svg" class="quote-item__icon" />
-        </BaseButton>
+          <BaseButton
+            theme="fail"
+            v-if="canDelete"
+            icon="/icons/delete.svg"
+            alt="delete icon"
+            tooltip="Удалить"
+            @click="$emit('clickDrop')"
+          />
+        </div>
+        <p class="quote-item__text">{{ text }}</p>
       </div>
-      <p class="quote-item__text">{{ text }}</p>
       <div class="quote-item__footer">
         <div class="quote-item__author" @click="onClickAuthor">
           {{ author }}
@@ -48,10 +55,9 @@ defineEmits<{
 const router = useRouter();
 
 function onClickAuthor() {
-  alert("Я работаю!ыы");
   router.push({
     query: {
-      author: "sdas",
+      author: props.authorSlug,
     },
   });
 }
@@ -62,6 +68,13 @@ function onClickAuthor() {
   background: #f5f5f5
   padding: 10px 5px
   border-radius: 4px
+
+.quote-item__content
+  display: flex
+  flex-direction: row-reverse
+  justify-content: space-between
+  align-items: flex-start
+  gap: 10px
 .quote-item__text
   font-size: 15px
   line-height: 120%

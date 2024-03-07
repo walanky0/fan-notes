@@ -1,27 +1,30 @@
 <template>
   <div>
     <TransitionGroup name="list" tag="ol" appear class="quote-list">
-      <li
-        class="quote-list__column"
-        v-for="(item, i) in list"
-        :key="item._id"
-        :style="{
-          transitionDelay: `${i * 0.2}s`,
-        }"
-        mode="out-in"
-      >
-        <Quote
-          :text="item.content"
-          :author="item.author"
-          :author-slug="item.authorSlug"
-          :date="item.dateAdded"
-          :is-favorite="item.isFavorite"
-          :can-delete="canDelete"
-          :can-click-favorite="canClickFavorite"
-          @click-favorite="$emit('clickFavorite', item)"
-          @click-drop="$emit('clickDrop', item)"
-        />
-      </li>
+      <template v-if="list.length">
+        <li
+          class="quote-list__column"
+          v-for="(item, i) in list"
+          :key="item._id"
+          :style="{
+            transitionDelay: `${i * 0.05}s`,
+          }"
+          mode="out-in"
+        >
+          <Quote
+            :text="item.content"
+            :author="item.author"
+            :author-slug="item.authorSlug"
+            :date="item.dateAdded"
+            :is-favorite="item.isFavorite"
+            :can-delete="canDelete"
+            :can-click-favorite="canClickFavorite"
+            @click-favorite="$emit('clickFavorite', item)"
+            @click-drop="$emit('clickDrop', item)"
+          />
+        </li>
+      </template>
+      <li v-else class="quote-list__column" mode="out-in">Здесь пусто ;(</li>
     </TransitionGroup>
   </div>
 </template>
